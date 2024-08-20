@@ -11,8 +11,8 @@ require 'vendor/autoload.php';
                     $mail->isSMTP();                                            
                     $mail->Host       = 'smtp.gmail.com';                    
                     $mail->SMTPAuth   = true;                             
-                    $mail->Username   = $email;                 
-                    $mail->Password   = $email_password;                        
+                    $mail->Username   = $email; // Your email address
+                    $mail->Password   = $email_password; // Your email password (Google generated password)                
                     $mail->SMTPSecure = 'tls';
                     $mail->Port       = 587;  
                 
