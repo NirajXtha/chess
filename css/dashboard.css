@@ -892,3 +892,21 @@ button:focus {
     font-size: 1.2rem;
     font-weight: 800;
 }
+
+.online-number {
+  font-size: 1.125rem;
+  flex-shrink: 0;
+  width: 15%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+@media (max-width: 1000px) {
+  .online-number {
+    margin-left: 0;
+    margin-top: 1.25rem;
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

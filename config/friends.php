@@ -304,12 +304,12 @@ $url = $protocol . $host . $requestUri;
                             <dt><?=$friend_request?></dt>
                         </div>
                     </dl>
-                    <div class="transfer-number">
+                    <div class="online-number">
                         <?php 
                             if($friend_status == '1') {
-                                echo "Online";
+                                echo '<i class="ph-fill ph-check-circle"></i>Online';
                             }else{
-                                echo "Offline";
+                                echo '<i class="ph ph-circle"></i>Offline';
                             }
                         ?>
                     </div>

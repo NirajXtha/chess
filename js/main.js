@@ -303,26 +303,47 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color) {
     return [bestMove, minValue];
   }
 }
-function help(color) {
-  if(color=="black")return "white";
-  return "black"
+function help() {
+  if(game.turn()=="b"){return "Black";}
+  else {return "White";}
+}
+function tellmeWhatHappened(status) {
+  if(status === "Draw"){
+    return "draw"
+  }
+  if(help() === "Black"){
+    return "win"
+  }
+  if(help() === "White"){
+    return "lose"
+  }
 }
 function checkStatus(color) {
-  if (game.in_checkmate()) {
-    $('#status').html(`<b>Checkmate!</b> Oops, <b>${help(color)}</b> lost.`);
+    if(compVCompGame === true) {
+      comp = true;
+  } else {
+      comp = false;
+  }
+    if (game.in_checkmate()) {
+    gameEndWinningStatus('Checkmate', help(), tellmeWhatHappened(""), comp, depth);
+    $('#status').html(`<b>Checkmate!</b> Oops, <b>${help()}</b> lost.`);
   } else if (game.insufficient_material()) {
+    gameEndWinningStatus('Insufficient Material', help(), tellmeWhatHappened("Draw"), comp, depth);
     $('#status').html(`It's a <b>draw!</b> (Insufficient Material)`);
   } else if (game.in_threefold_repetition()) {
+    gameEndWinningStatus('Threefold Repetition', help(), tellmeWhatHappened("Draw"), comp, depth);
     $('#status').html(`It's a <b>draw!</b> (Threefold Repetition)`);
   } else if (game.in_stalemate()) {
+    gameEndWinningStatus('Stalemate', help(), tellmeWhatHappened("Draw"), comp, depth);
     $('#status').html(`It's a <b>draw!</b> (Stalemate)`);
   } else if (game.in_draw()) {
+    gameEndWinningStatus('50-move Rule', help(), tellmeWhatHappened("Draw"), comp, depth);
     $('#status').html(`It's a <b>draw!</b> (50-move Rule)`);
   } else if (game.in_check()) {
     $('#status').html(`Oops, <b>${help(color)}</b> is in <b>check!</b>`);
     return false;
   } else {
-    $('#status').html(`No check, checkmate, or draw.`);
+    $('#status').html(`No check, checkmate, or draw. <b>${help()}</b> to move.`);
     return false;
   }
   return true;
@@ -357,7 +378,6 @@ function getBestMove(game, color, currSum) {
     var depth = parseInt($('#search-depth-white').find(':selected').text());
   }
 
-  var d = new Date().getTime();
   var [bestMove, bestMoveValue] = minimax(
     game,
     depth,
@@ -367,13 +387,6 @@ function getBestMove(game, color, currSum) {
     currSum,
     color
   );
-  var d2 = new Date().getTime();
-  var moveTime = d2 - d;
-  var positionsPerS = (positionCount * 1000) / moveTime;
-
-  $('#position-count').text(positionCount);
-  $('#time').text(moveTime / 1000);
-  $('#positions-per-s').text(Math.round(positionsPerS));
 
   return [bestMove, bestMoveValue];
 }
@@ -461,33 +474,9 @@ function reset() {
 /*
  * Event listeners for various buttons.
  */
-$('#ruyLopezBtn').on('click', function () {
-  reset();
-  game.load(
-    'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 0 1'
-  );
-  board.position(game.fen());
-  window.setTimeout(function () {
-    makeBestMove('b');
-  }, 250);
-});
-$('#italianGameBtn').on('click', function () {
-  reset();
-  game.load(
-    'r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 0 1'
-  );
-  board.position(game.fen());
-  window.setTimeout(function () {
-    makeBestMove('b');
-  }, 250);
-});
-$('#sicilianDefenseBtn').on('click', function () {
-  reset();
-  game.load('rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1');
-  board.position(game.fen());
-});
 $('#startBtn').on('click', function () {
   reset();
+  compVCompGame(true);
 });
 
 $('#compVsCompBtn').on('click', function () {

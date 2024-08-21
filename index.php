@@ -158,10 +158,6 @@
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/jquery.js"></script>
-    
-</body>
-</html>
-
 <?php
 if(isset($_POST['signup']))
 {
@@ -375,3 +371,5 @@ function generateOtp() {
     return $result; 
 }
 ?>
+</body>
+</html>
