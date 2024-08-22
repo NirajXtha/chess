@@ -94,7 +94,7 @@ require 'vendor/autoload.php';
                             });
                     <   /script>
                     ';
-                    return false;
+                    return $mail->ErrorInfo;
                 }
     }
 

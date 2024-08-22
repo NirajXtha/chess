@@ -223,7 +223,7 @@ if ($row = mysqli_fetch_assoc($query)) {
                         <div class="row my-3 text-align-center">
                             <div class="col-md-12">
                                 <h2>Status</h2>
-                                <p><span id="status">No check, checkmate, or draw.</span></p>
+                                <p><span id="status"><b>White's</b> turn to move.</span></p>
                             </div>
                         </div>
                     </div>
@@ -248,34 +248,39 @@ if ($row = mysqli_fetch_assoc($query)) {
             window.location.href = 'profile.php';
         });
 
+        var hasRun = false;
+
         function gameEndWinningStatus(whatHappened, color, status, comp, depth) {
             if (color = "Black") {
                 showColor = "White";
             } else {
                 showColor = "Black";
             }
-            if(comp) {
+            if (comp) {
                 type = "Computer";
-            }else{
+            } else {
                 type = "Solo";
             }
+            if (!hasRun) {
+                hasRun = true;
+                $.ajax({
+                    url: 'save_game.php',
+                    method: 'POST',
+                    data: {
+                        id: '<?= $user_id ?>',
+                        type: type,
+                        status: status,
+                        level: depth
+                    },
+                    success: function(response) {
+                        console.log('Status saved successfully:', response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error saving status:', error);
+                    }
+                });
+            }
 
-            $.ajax({
-                url: 'save_game.php',
-                method: 'POST',
-                data: {
-                    id: '<?=$user_id?>',
-                    type: type,
-                    status: status,
-                    level: depth
-                },
-                success: function(response) {
-                    console.log('Status saved successfully:', response);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error saving status:', error);
-                }
-            });
 
             $(document).ready(function() {
                 Swal.fire({

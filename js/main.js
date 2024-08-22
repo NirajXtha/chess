@@ -11,6 +11,8 @@ var squareClass = 'square-55d63';
 var squareToHighlight = null;
 var colorToHighlight = null;
 var positionCount;
+var depth;
+var compVCompGame = false;
 
 var config = {
   draggable: true,
@@ -319,31 +321,26 @@ function tellmeWhatHappened(status) {
   }
 }
 function checkStatus(color) {
-    if(compVCompGame === true) {
-      comp = true;
-  } else {
-      comp = false;
-  }
     if (game.in_checkmate()) {
-    gameEndWinningStatus('Checkmate', help(), tellmeWhatHappened(""), comp, depth);
+    gameEndWinningStatus('Checkmate', help(), tellmeWhatHappened(""), compVCompGame, depth);
     $('#status').html(`<b>Checkmate!</b> Oops, <b>${help()}</b> lost.`);
   } else if (game.insufficient_material()) {
-    gameEndWinningStatus('Insufficient Material', help(), tellmeWhatHappened("Draw"), comp, depth);
+    gameEndWinningStatus('Insufficient Material', help(), tellmeWhatHappened("Draw"), compVCompGame, depth);
     $('#status').html(`It's a <b>draw!</b> (Insufficient Material)`);
   } else if (game.in_threefold_repetition()) {
-    gameEndWinningStatus('Threefold Repetition', help(), tellmeWhatHappened("Draw"), comp, depth);
+    gameEndWinningStatus('Threefold Repetition', help(), tellmeWhatHappened("Draw"), compVCompGame, depth);
     $('#status').html(`It's a <b>draw!</b> (Threefold Repetition)`);
   } else if (game.in_stalemate()) {
-    gameEndWinningStatus('Stalemate', help(), tellmeWhatHappened("Draw"), comp, depth);
+    gameEndWinningStatus('Stalemate', help(), tellmeWhatHappened("Draw"), compVCompGame, depth);
     $('#status').html(`It's a <b>draw!</b> (Stalemate)`);
   } else if (game.in_draw()) {
-    gameEndWinningStatus('50-move Rule', help(), tellmeWhatHappened("Draw"), comp, depth);
+    gameEndWinningStatus('50-move Rule', help(), tellmeWhatHappened("Draw"), compVCompGame, depth);
     $('#status').html(`It's a <b>draw!</b> (50-move Rule)`);
   } else if (game.in_check()) {
     $('#status').html(`Oops, <b>${help(color)}</b> is in <b>check!</b>`);
     return false;
   } else {
-    $('#status').html(`No check, checkmate, or draw. <b>${help()}</b> to move.`);
+    $('#status').html(`<b>${help()}'s</b> to move.`);
     return false;
   }
   return true;
@@ -371,12 +368,7 @@ function updateAdvantage() {
  */
 function getBestMove(game, color, currSum) {
   positionCount = 0;
-
-  if (color === 'b') {
-    var depth = parseInt($('#search-depth').find(':selected').text());
-  } else {
-    var depth = parseInt($('#search-depth-white').find(':selected').text());
-  }
+  depth = parseInt($('#search-depth').find(':selected').text());
 
   var [bestMove, bestMoveValue] = minimax(
     game,
@@ -476,11 +468,11 @@ function reset() {
  */
 $('#startBtn').on('click', function () {
   reset();
-  compVCompGame(true);
 });
 
 $('#compVsCompBtn').on('click', function () {
   reset();
+  compVCompGame = true;
   compVsComp('w');
 });
 $('#resetBtn').on('click', function () {
