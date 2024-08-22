@@ -8,6 +8,7 @@
 <head>
 	<title>Login | SignUp</title>
 	<link rel="stylesheet" type="text/css" href="css/customStyle.css">
+    <link rel="shortcut icon" href="./img/logo.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>

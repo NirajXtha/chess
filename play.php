@@ -33,9 +33,7 @@ if ($row = mysqli_fetch_assoc($query)) {
 <head>
     <title>My Chess</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta
-        name="description"
-        content="A simple chess AI.">
+    <link rel="shortcut icon" href="./img/logo.png" type="image/x-icon">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet"
@@ -158,17 +156,6 @@ if ($row = mysqli_fetch_assoc($query)) {
                                         <div class="form-group">
                                             <label for="search-depth">Level (Black):</label>
                                             <select id="search-depth">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3" selected>3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center justify-content-center">
-                                        <div class="form-group">
-                                            <select id="search-depth-white" hidden>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3" selected>3</option>
