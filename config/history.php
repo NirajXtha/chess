@@ -26,7 +26,7 @@
                         <dd>level <?=$level?></dd>
                     </div>
                     <div>
-                        <dt><?php if($status == 'win') {echo "Checkmate";} elseif($status == 'lose') {echo "Checkmate";} else {echo "Stalemate";}?></dt>
+                        <dt><?php if($status == 'win') {echo "Checkmate";} elseif($status == 'lose') {echo "Checkmate";} else {echo "Draw";}?></dt>
                         <dd><?php if($status == 'win') {echo "White";} elseif($status == 'lose') {echo "Black";} else {echo "White";}?></dd>
                     </div>
                     <div>

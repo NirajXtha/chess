@@ -276,7 +276,7 @@ if ($row = mysqli_fetch_assoc($query)) {
                     text: showColor + " " + status,
                     showDenyButton: true,
                     confirmButtonText: "Play Again",
-                    denyButtonText: `Quit`
+                    denyButtonText: `Back to Dashboard`
                 }).then((result) => {
                     if (result.isConfirmed) {
                         location.reload();

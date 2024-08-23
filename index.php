@@ -269,33 +269,18 @@ if(isset($_POST['signup']))
                 if($result == false) {
                     $sql = "DELETE FROM users WHERE email = '$email' AND username = '$username'";
                     $que = mysqli_query($conn, $sql);
-                    if($que) {
-                        echo '
-                        <script>
-                            $(document).ready(function(){
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Something went wrong! Mail could not be sent.",
-                                    text: "Check if the email is correct.",
-                                });
-                            });
-                    <   /script>
-                    ';
-                        echo '<script>window.location.href = "index.php";</script>';
-                        exit();
-                    }
                 }
             } else {
                 echo "Error: " . $sql . "<br>" . mysqli_error($conn);
                 echo '
                     <script>
-                    $(document).ready(function(){
-                        Swal.fire({
-                            icon: "error",
-                            text: "'. mysqli_error($conn) .'",
+                        $(document).ready(function(){
+                            Swal.fire({
+                                icon: "error",
+                                text: "'. mysqli_error($conn) .'",
+                            });
                         });
-                    });
-                </script>
+                    </script>
                 ';
             }
         }
