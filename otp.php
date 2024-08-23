@@ -56,7 +56,6 @@
 			
 		}
 		$date = date('Y-m-d H:i:s', time());
-				echo $date;
 	
 		$sql = "SELECT * FROM users WHERE token = '$token' AND email = '$email' AND username = '$username' AND id = '$user_id'";
 		$result = mysqli_query($conn, $sql);
@@ -77,22 +76,20 @@
 					if($date > $row['expire_at']) { 
 						echo '
 							<script>
-							$(document).ready(function(){
-								Swal.fire({
-									icon: "error",
-									text: "OTP has expired. Please Register again.",
+								$(document).ready(function(){
+									Swal.fire({
+										icon: "error",
+										text: "OTP has expired. Please Register again.",
+									});
 								});
-							});
-						</script>
+							</script>
 						';
 						$sql = mysqli_query($conn, "DELETE FROM otp WHERE user_id = '$user_id'");
 						$sql = mysqli_query($conn, "DELETE FROM users WHERE id = '$user_id'");
 		
 						if($sql) {
 							echo '<script>
-							const delay = ms => new Promise(res => setTimeout(res, ms));
-							$(await delay(3000));
-							window.location.href = "index.php?otp=timeout";
+								window.location.href = "index.php?otp=timeout";
 							</script>';
 							exit();
 						}
