@@ -7,6 +7,7 @@
 		exit();
 	}
 	$username = $_SESSION['username'];
+	$user_name = $_SESSION['username'];
 	$user_id = $_SESSION['user_id'];
 	$email = $_SESSION['email'];
 	$token = $_SESSION['token'];

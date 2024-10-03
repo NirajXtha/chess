@@ -140,6 +140,7 @@
 			<div class="signup">
 				<form method="POST" action="index.php">
 					<label for="chk" aria-hidden="true">Sign up</label>
+                    <input type="text" name="name" placeholder="Full Name" required>
 					<input type="text" name="txt" placeholder="User name" required="">
 					<input type="email" name="email" placeholder="Email" required>
 					<input type="password" name="pswd" placeholder="Password" required="">
@@ -166,6 +167,7 @@ if(isset($_POST['signup']))
         $username = trim(stripslashes($_POST['txt']));
         $email = trim(stripslashes($_POST['email']));
         $password = trim(stripslashes($_POST['pswd']));
+        $name = $_POST['name'];
 
         $checkUser = "SELECT * FROM users WHERE username = '$username'";
         $result = mysqli_query($conn, $checkUser);
@@ -244,7 +246,7 @@ if(isset($_POST['signup']))
             // Your code to handle successful form submission goes here
             $token = bin2hex(random_bytes(16));
 
-            $sql = "INSERT INTO users (username, email, password, token, pic) VALUES ('$username', '$email', '$password', '$token', './img/user.png')";
+            $sql = "INSERT INTO users (`name`, username, email, password, token, pic) VALUES ('$name','$username', '$email', '$password', '$token', './img/user.png')";
             if (mysqli_query($conn, $sql)) {
                 // For OTP verification | using PHP Mailer
                 $otp = generateOtp();

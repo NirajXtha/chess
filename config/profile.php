@@ -35,7 +35,7 @@
             if($row['is_friends'] == '1') {
                 $friends++;
             }else{
-                $req++;
+                $request_sent++;
             }
         }
     }

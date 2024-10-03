@@ -190,29 +190,65 @@ button:hover:after {
         }else{
             $password = $newPassword;
         }
-        $_SESSION['username'] = $username;
-                $_SESSION['email'] = $email;
-                $_SESSION['password'] = $password;
+            $_SESSION['username'] = $username;
+            $_SESSION['email'] = $email;
+            $_SESSION['password'] = $password;
         if(empty(isset($_FILES))){
-            $sql = mysqli_query($conn, "UPDATE users SET username = '$username', email = '$email', password = '$password' WHERE id = '$user_id'");
-            if($sql){
-                echo '<script>window.location.replace("profile.php")</script>';
-            }else{
-                echo '
-                <script>
-                    $(document).ready(function(){
-                        Swal.fire({
-                            icon: "error",
-                            title: "Something went Wrong!",
-                            text: "Please Try again!",
+            if($user_name == $username){
+                $sql = mysqli_query($conn, "UPDATE users SET username = '$username', email = '$email', password = '$password' WHERE id = '$user_id'");
+                if($sql){
+                    echo '<script>window.location.replace("profile.php")</script>';
+                }else{
+                    echo '
+                    <script>
+                        $(document).ready(function(){
+                            Swal.fire({
+                                icon: "error",
+                                title: "Something went Wrong!",
+                                text: "Please Try again!",
+                            });
                         });
-                    });
-                </script>
-            ';
-            exit();
+                    </script>
+                ';
+                exit();
+                }
+            }else{
+                $check = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username'");
+                if(mysqli_num_rows($check) >= 1){
+                    echo '
+                        <script>
+                            $(document).ready(function(){
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Username Already Exists!",
+                                    text: "Please Try again!",
+                                });
+                            });
+                        </script>
+                        ';
+                        exit();
+                }else{
+                    $sql = mysqli_query($conn, "UPDATE users SET username = '$username', email = '$email', password = '$password' WHERE id = '$user_id'");
+                    if($sql){
+                        echo '<script>window.location.replace("profile.php")</script>';
+                    }else{
+                        echo '
+                            <script>
+                                $(document).ready(function(){
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Something went Wrong!",
+                                        text: "Please Try again!",
+                                    });
+                                });
+                            </script>
+                            ';
+                        exit();
+                    }
+                }
             }
         }
-        if (isset($_FILES['pic']) && $_FILES['pic']['error'] === UPLOAD_ERR_OK) {
+        elseif (isset($_FILES['pic']) && $_FILES['pic']['error'] === UPLOAD_ERR_OK) {
             $fileTmpPath = $_FILES['pic']['tmp_name'];
             $fileName = $_FILES['pic']['name'];
             $fileSize = $_FILES['pic']['size'];
@@ -258,22 +294,25 @@ button:hover:after {
                 ';
             }
         }
-
-        $sql = mysqli_query($conn, "UPDATE users SET username = '$username', email = '$email', password = '$password', pic = '$pic' WHERE id = '$user_id'");
-        if($sql){
-            echo '<script>window.location.replace("profile.php")</script>';
-        }else{
-            echo '
-                <script>
-                    $(document).ready(function(){
-                        Swal.fire({
-                            icon: "error",
-                            title: "Something went Wrong!",
-                            text: "Please Try again!",
+        else{
+            $sql = mysqli_query($conn, "UPDATE users SET username = '$username', email = '$email', password = '$password', pic = '$pic' WHERE id = '$user_id'");
+            if($sql){
+                echo '<script>window.location.replace("profile.php")</script>';
+            }else{
+                echo '
+                    <script>
+                        $(document).ready(function(){
+                            Swal.fire({
+                                icon: "error",
+                                title: "Something went Wrong!",
+                                text: "Please Try again!",
+                            });
                         });
-                    });
-                </script>
-            ';
+                    </script>
+                ';
+            }
         }
+
+        
     }
 ?>

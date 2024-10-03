@@ -112,47 +112,52 @@ $url = $protocol . $host . $requestUri;
  background-color: red;
 }
 
+#search-results{
+    /* outline: 1px lime solid; */
+}
+
 </style>
 <div class="app-body-main-content">
     <section class="service-section">
         <h2>Add Friends</h2>
         <form action="<?=$url?>" method="post" id="add-friends">
             <div class="group">
-            <svg viewBox="0 0 24 24" aria-hidden="true" class="search-icon">
-                <g>
-                <path
-                    d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"
-                ></path>
-                </g>
-            </svg>
-            <input id="query" class="input" type="search" placeholder="Search..." name="username" />
-            <input class="search_btn" name="search" id="choose2" type="submit" />
-            <div id="searchBtn">
-                <label for="choose2">
-                    <li class="li">
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        height="24"
-                        width="24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                        class="svg w-6 h-6 text-gray-800 dark:text-white"
-                    >
-                        <path
-                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke="currentColor"
-                        ></path>
-                    </svg>
-                    </li>
-                </label>
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="search-icon">
+                    <g>
+                    <path
+                        d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"
+                    ></path>
+                    </g>
+                </svg>
+                <input id="query" class="input" type="search" placeholder="Search..." name="username" />
+                <button class="search_btn" name="search" id="choose2" type="submit"></button>
+                <div id="searchBtn">
+                    <label for="choose2">
+                        <li class="li">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            height="24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                            class="svg w-6 h-6 text-gray-800 dark:text-white"
+                        >
+                            <path
+                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke="currentColor"
+                            ></path>
+                        </svg>
+                        </li>
+                    </label>
+                </div>
             </div>
-            </div>
+            <div id="search-results"></div>
         </form>
 <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['accept'])) {
         if(empty($_POST['username'])) {
             echo 'Please input username!';
         }else{
@@ -171,8 +176,6 @@ $url = $protocol . $host . $requestUri;
                     else echo 'Already Sent Request!';
                     
                 }else{
-                    $row = mysqli_fetch_assoc($query);
-                    $friend_id = $row['id'];
                     $query = mysqli_query($conn, "INSERT INTO `requests` (`user_id`, `friend_id`) VALUES ('$user_id', '$friend_id')");
                     if($query) {
                         echo 'Friend Request Sent!';
@@ -281,6 +284,7 @@ $url = $protocol . $host . $requestUri;
                     }
                     $friend = mysqli_query($conn, "SELECT * FROM `users` WHERE id = '$friend_id'");
                     $fren = mysqli_fetch_assoc($friend);
+                    $friend_name = $fren['name'];
                     $friend_username = $fren['username'];
                     $friend_email = $fren['email'];
                     $friend_pic = $fren['pic'];
@@ -291,6 +295,10 @@ $url = $protocol . $host . $requestUri;
                         <img src="<?=$friend_pic?>" alt="">
                     </div>
                     <dl class="transfer-details">
+                        <div>
+                            <dd>Name</dd>
+                            <dt><?=$friend_name?></dt>
+                        </div>
                         <div>
                             <dd>Username</dd>
                             <dt><?=$friend_username?></dt>
@@ -322,3 +330,39 @@ $url = $protocol . $host . $requestUri;
         </div>
     </section>
 </div>
+
+<script>
+    document.getElementById('query').addEventListener('input', function() {
+        const query = this.value;
+        
+        if (query.length > 2) { // Start searching after 3 characters
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'search.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+            xhr.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    // Display the results
+                    document.getElementById('search-results').innerHTML = this.responseText;
+                }
+            };
+            
+            xhr.send('query=' + query);
+        } else {
+            document.getElementById('search-results').innerHTML = '';
+        }
+    });
+
+function selectUser(username) {
+    // Fill the input field with the selected username
+    document.getElementById('query').value = username;
+    
+    // Clear the search results
+    document.getElementById('search-results').innerHTML = '';
+
+    // Submit the form automatically
+    document.getElementById('add-friends').submit();
+}
+
+
+</script>
