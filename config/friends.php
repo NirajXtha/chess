@@ -112,10 +112,6 @@ $url = $protocol . $host . $requestUri;
  background-color: red;
 }
 
-#search-results{
-    /* outline: 1px lime solid; */
-}
-
 </style>
 <div class="app-body-main-content">
     <section class="service-section">
