@@ -39,7 +39,7 @@ This project follows the **Prototype Model**, iteratively refining features to e
 Below are examples of our **application interface** and a **gameplay demo**. 
 <img src="https://i.ibb.co/dsTQHmJ/dashboard.png"> <br>
 <img src="https://i.ibb.co/kqyG6tS/game.png"> <br>
-<img src="https://i.ibb.co/zJBHNTj/Chess-Demo.gif">
+![Gameplay Demo](https://i.ibb.co/zJBHNTj/Chess-Demo.gif)
 
 ---
 
